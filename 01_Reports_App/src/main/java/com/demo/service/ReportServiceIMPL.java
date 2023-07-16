@@ -43,12 +43,11 @@ public class ReportServiceIMPL implements ReportService {
 		return planRepo.getPlanStatus();
 	}
 
-	CitizenPlan entity = new CitizenPlan();
-
 	@Override
 	public List<CitizenPlan> search(SearchRequest request) {
 		// we need to copy the data from binding object to entity object
 		// for dynamic query generate
+		CitizenPlan entity = new CitizenPlan();
 
 		if (null != request.getPlanName() && !"".equals(request.getPlanName())) {
 			entity.setPlanName(request.getPlanName());
@@ -81,7 +80,7 @@ public class ReportServiceIMPL implements ReportService {
 
 		File file = new File("Plans.xls");
 
-		List<CitizenPlan> plans = planRepo.findAll(Example.of(entity));
+		List<CitizenPlan> plans = planRepo.findAll();
 		excelGenerator.generate(response, plans, file);
 
 		String subject = "Test mail subject";
@@ -98,8 +97,8 @@ public class ReportServiceIMPL implements ReportService {
 	public boolean exportPdf(HttpServletResponse response) throws Exception {
 
 		File file = new File("Plans.pdf");
-		
-		List<CitizenPlan> plans = planRepo.findAll(Example.of(entity));
+
+		List<CitizenPlan> plans = planRepo.findAll();
 		pdfGenerator.generate(response, plans, file);
 
 		String subject = "Test mail subject";
